@@ -7,6 +7,8 @@
 
 **New**:  Please check out [contrastive-unpaired-translation](https://github.com/taesungp/contrastive-unpaired-translation) (CUT), our new unpaired image-to-image translation model that enables fast and memory-efficient training.
 
+Copy from pytorch-CycleGAN-and-pix2pix..
+
 We provide PyTorch implementations for both unpaired and paired image-to-image translation.
 
 The code was written by [Jun-Yan Zhu](https://github.com/junyanz) and [Taesung Park](https://github.com/taesungp), and supported by [Tongzhou Wang](https://github.com/SsnL).
