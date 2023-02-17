@@ -1,6 +1,7 @@
 import torch
 from .base_model import BaseModel
 from . import networks
+import numpy as np
 
 
 class Pix2PixModel(BaseModel):
@@ -125,3 +126,7 @@ class Pix2PixModel(BaseModel):
         self.optimizer_G.zero_grad()        # set G's gradients to zero
         self.backward_G()                   # calculate graidents for G
         self.optimizer_G.step()             # update G's weights
+
+    def get_npy_result(self):
+        fake_B_npy = self.fake_B.detach().float().cpu().numpy()
+        return np.squeeze(fake_B_npy)

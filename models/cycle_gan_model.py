@@ -3,6 +3,7 @@ import itertools
 from util.image_pool import ImagePool
 from .base_model import BaseModel
 from . import networks
+import numpy as np
 
 
 class CycleGANModel(BaseModel):
@@ -192,3 +193,7 @@ class CycleGANModel(BaseModel):
         self.backward_D_A()      # calculate gradients for D_A
         self.backward_D_B()      # calculate graidents for D_B
         self.optimizer_D.step()  # update D_A and D_B's weights
+
+    def get_npy_result(self):
+        fake_B_npy = self.fake_B.detach().float().cpu().numpy()
+        return np.squeeze(fake_B_npy)
