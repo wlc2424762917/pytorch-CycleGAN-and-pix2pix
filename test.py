@@ -78,9 +78,10 @@ if __name__ == '__main__':
         model.test()           # run inference
         visuals_npy = model.get_npy_result()
         # print(visuals_npy.shape)
-        np.save(os.path.join(opt.npy_results_dir, str(i)), visuals_npy)
+
         visuals = model.get_current_visuals()  # get image results
         img_path = model.get_image_paths()     # get image paths
+        np.save(os.path.join(opt.npy_results_dir, img_path[0][-32:-4]), visuals_npy)
         if i % 5 == 0:  # save images to an HTML file
             print('processing (%04d)-th image... %s' % (i, img_path))
         save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio, width=opt.display_winsize, use_wandb=opt.use_wandb)

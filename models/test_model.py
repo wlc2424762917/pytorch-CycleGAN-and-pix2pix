@@ -1,5 +1,6 @@
 from .base_model import BaseModel
 from . import networks
+import numpy as np
 
 
 class TestModel(BaseModel):
@@ -67,3 +68,7 @@ class TestModel(BaseModel):
     def optimize_parameters(self):
         """No optimization for test model."""
         pass
+
+    def get_npy_result(self):
+        fake_npy = self.fake.detach().float().cpu().numpy()
+        return np.squeeze(fake_npy)

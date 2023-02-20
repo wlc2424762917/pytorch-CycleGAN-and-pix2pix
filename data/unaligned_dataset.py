@@ -64,7 +64,9 @@ class UnalignedDataset(BaseDataset):
         # B = self.transform_B(B_img)
         A = np.load(A_path)
         B = np.load(B_path)
-        A, B = A/255., B/255.
+        # A, B = A/255., B/255.
+        A = (A - A.min()) / (A.max() - A.min() + 1e-6)
+        B = (B - B.min()) / (B.max() - B.min() + 1e-6)
         w, h = A.shape
 
         transform_params = get_params(self.opt, A.shape)
