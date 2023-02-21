@@ -197,4 +197,5 @@ class CycleGANModel(BaseModel):
 
     def get_npy_result(self):
         fake_B_npy = self.fake_B.detach().float().cpu().numpy()
+        fake_npy = (fake_npy + 1) / 2
         return np.squeeze(fake_B_npy)

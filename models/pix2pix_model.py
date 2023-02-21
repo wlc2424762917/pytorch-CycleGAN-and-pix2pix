@@ -129,4 +129,5 @@ class Pix2PixModel(BaseModel):
 
     def get_npy_result(self):
         fake_B_npy = self.fake_B.detach().float().cpu().numpy()
+        fake_B_npy = (fake_B_npy + 1) / 2 
         return np.squeeze(fake_B_npy)

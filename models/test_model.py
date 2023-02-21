@@ -64,6 +64,7 @@ class TestModel(BaseModel):
     def forward(self):
         """Run forward pass."""
         self.fake = self.netG(self.real)  # G(real)
+        self.fake = (self.fake + 1) / 2
 
     def optimize_parameters(self):
         """No optimization for test model."""
@@ -71,4 +72,5 @@ class TestModel(BaseModel):
 
     def get_npy_result(self):
         fake_npy = self.fake.detach().float().cpu().numpy()
+        fake_npy = (fake_npy + 1) / 2
         return np.squeeze(fake_npy)

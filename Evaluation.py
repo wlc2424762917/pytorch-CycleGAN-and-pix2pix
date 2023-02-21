@@ -91,15 +91,19 @@ def calculate_ssim(img1, img2):
 
 
 if __name__ == '__main__':
-    # path_infer = "/media/NAS02/lc/braTS_transfer/braTS_s_cycle_npy/"
-    # path_infer = "/media/NAS02/lc/braTS_transfer/BraTS_s_pix2pix_npy/"
+    path_infer = "/media/NAS02/lc/braTS_transfer/braTS_s_cycle_npy/"
+    # path_infer = "/media/NAS02/lc/braTS_transfer/braTS_s_pix2pix_npy/"
     # path_infer = "/media/NAS02/lc/braTS_transfer/MUNIT_00/"
     # path_infer = "/media/NAS02/lc/braTS_transfer/MUNIT_03/"
     # path_infer = "/media/NAS02/lc/BraTS_transfer_1/BraTS_s_pix2pix_npy/"
     path_infer = "/media/NAS02/lc/BraTS_transfer_1/braTS_s_cycle_npy/"
     # path_infer = "/media/NAS02/lc/BraTS_transfer_1/MUNIT_00/"
     # r"C:\Users\wlc\PycharmProjects\pytorch-CycleGAN-and-pix2pix\results_npy"
-    path_gt = "/media/NAS02/BraTS2020/pix2pix_cycle/style_transfer_divided/test/"
+    # path_infer = "/media/NAS02/lc/braTS_transfer/braTS_s_pix2pix_norm_npy/"
+    # path_infer = "/home/lichao/MSPC/results/media/ssd/lc/BraTS2020/pix2pix_cycle/style_transfer_divided_unpaire/maxgcpert3_gan/12_256_AtoB_resnet_9blocks_basic_2_0.1_1.0_unbounded_0.5/test_latest/images/fake_Bnpy"
+    # path_gt = "/media/NAS02/BraTS2020/pix2pix_cycle/style_transfer_divided/test/"
+    path_gt = "/media/NAS02/BraTS2020/pix2pix_cycle/style_transfer_divided_unpaired/testB/"
+    # /media/NAS02/BraTS2020/pix2pix_cycle/style_transfer_divided_unpaired/testB/
     # r"D:\style_transfer_divided_unpaired\testB"
 
     path_gts = []
@@ -108,7 +112,7 @@ if __name__ == '__main__':
         for fname in fnames:
             path = os.path.join(root, fname)
             path_gts.append(path)
-    # print(path_gts)
+    print(path_gts)
     # print(len(path_gts))
 
     for root, _, fnames in sorted(os.walk(path_infer)):
@@ -121,30 +125,39 @@ if __name__ == '__main__':
     psnrs = []
     ssims = []
     fids = []
+    path_infers = sorted(path_infers)
+    path_gts = sorted(path_gts)
     for idx, (infer_img_path, gt_img_path) in enumerate(zip(path_infers, path_gts)):
         if idx == 500:
             break
         print(f"{idx}: {infer_img_path}, {gt_img_path}.")
         infer_img = np.load(infer_img_path, allow_pickle=True)
-        # print(infer_img.shape)
+        #print(infer_img.shape)
+        if len(infer_img.shape) == 3:
+            infer_img = infer_img[0]
         if len(infer_img.shape) == 4:
             infer_img = infer_img[0][0]
+
         gt_img = np.load(gt_img_path)
+        
         if gt_img.max() > 0:
+            # print(gt_img.shape)
             if len(gt_img.shape) == 3:
                 gt_img = gt_img[0]
             if gt_img.shape[0] == 480:
                 gt_img = gt_img[240:480, :]
             
             zoom_scale_H, zoom_scale_W = infer_img.shape[0]/gt_img.shape[0], infer_img.shape[1]/gt_img.shape[1]
-            gt_img = zoom(gt_img, zoom=[zoom_scale_H, zoom_scale_W], order=3)
-            #print(gt_img.shape)
+            infer_img = zoom(infer_img, zoom=[1/zoom_scale_H, 1/zoom_scale_W], order=3)
+            # print(gt_img.shape)
             fid = 0
             # fid = calculate_fid((infer_img - infer_img.min())/(infer_img.max() - infer_img.min()), (gt_img - gt_img.min())/(gt_img.max() - gt_img.min()))
-            gt_img = ((gt_img - gt_img.min())/(gt_img.max() - gt_img.min())) * 255
-            infer_img = ((infer_img - infer_img.min())/(infer_img.max() - infer_img.min())) * 255
-            # print(infer_img.max())
-            # print(gt_img.max())
+            # gt_img = ((gt_img - gt_img.min())/(gt_img.max() - gt_img.min())) * 255
+            #infer_img = ((infer_img - infer_img.min())/(infer_img.max() - infer_img.min())) * 255
+            infer_img = infer_img * 255
+
+            print(infer_img.max())
+            print(gt_img.max())
             psnr, ssim = calculate_psnr(infer_img, gt_img), calculate_ssim(infer_img, gt_img)
             
             print(f"PSNR: {psnr}, SSIM: {ssim}, FID: {fid}")

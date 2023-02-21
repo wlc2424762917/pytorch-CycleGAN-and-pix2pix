@@ -38,7 +38,6 @@ def save_images(webpage, visuals, image_path, aspect_ratio=1.0, width=256, use_w
     ims, txts, links = [], [], []
     ims_dict = {}
     for label, im_data in visuals.items():
-        im_data = (im_data+1)/2
         im = util.tensor2im(im_data)
         image_name = '%s_%s.png' % (name, label)
         save_path = os.path.join(image_dir, image_name)

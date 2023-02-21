@@ -77,8 +77,6 @@ if __name__ == '__main__':
         model.set_input(data)  # unpack data from data loader
         model.test()           # run inference
         visuals_npy = model.get_npy_result()
-
-        visuals_npy = (visuals_npy+1)/2
         # print(visuals_npy.shape)
 
         visuals = model.get_current_visuals()  # get image results
