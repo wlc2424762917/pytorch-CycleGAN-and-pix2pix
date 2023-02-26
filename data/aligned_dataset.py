@@ -53,11 +53,17 @@ class AlignedDataset(BaseDataset):
         w, h = AB.shape
         w2 = int(w / 2)
 
-        AB = AB/255
         # A = AB.crop((0, 0, w2, h))
         # B = AB.crop((w2, 0, w, h))
         A = AB[0:w2, 0:h]
         B = AB[w2:w, 0:h]
+
+        A = (A - A.min()) / (A.max() - A.min() + 1e-6)
+        B = (B - B.min()) / (B.max() - B.min() + 1e-6)
+
+        # transform.norm(0.5, 0.5)
+        # A = (A - 0.5) / 0.5
+        # B = (B - 0.5) / 0.5
 
         # apply the same transform to both A and B
         transform_params = get_params(self.opt, A.shape)
