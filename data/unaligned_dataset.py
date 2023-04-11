@@ -65,9 +65,8 @@ class UnalignedDataset(BaseDataset):
         A = np.load(A_path)
         B = np.load(B_path)
         # A, B = A/255., B/255.
-        A = (A - A.min()) / (A.max() - A.min() + 1e-6)
-        B = (B - B.min()) / (B.max() - B.min() + 1e-6)
-
+        A = A/255
+        B = B/255
         # transform.norm(0.5, 0.5)
         # A = (A - 0.5) / 0.5
         # B = (B - 0.5) / 0.5
