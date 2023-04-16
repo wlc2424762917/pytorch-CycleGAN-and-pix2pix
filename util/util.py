@@ -55,7 +55,7 @@ def save_image(image_numpy, image_path, aspect_ratio=1.0):
         image_path (str)          -- the path of the image
     """
 
-    print(image_numpy.shape)
+    # print(image_numpy.shape)
     image_pil = Image.fromarray(image_numpy)
     h, w, _ = image_numpy.shape
 
