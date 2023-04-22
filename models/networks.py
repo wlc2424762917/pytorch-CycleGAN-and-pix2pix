@@ -3,7 +3,6 @@ import torch.nn as nn
 from torch.nn import init
 import functools
 from torch.optim import lr_scheduler
-from models.deeplab import Deeplab #lys
 from collections import OrderedDict #lys
 import torch.nn.functional as F #lys
 from models.res_SR_SEG_net_with_skip_single_branch import Res_SR_SEG_Net
@@ -186,7 +185,7 @@ def semantic(init_weights=None, gpu_ids=0):
     )
     if init_weights is not None:
         saved_state_dict = torch.load(init_weights, map_location=lambda storage, loc: storage)
-        model.load_state_dict(saved_state_dict)
+        model.load_state_dict(saved_state_dict["state_dict"])
         print("Loaded weights from {}".format(init_weights))
     model.eval()
     for param in model.parameters():

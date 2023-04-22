@@ -156,14 +156,15 @@ class CycleGANModel(BaseModel):
         real_A_feat, rec_A_feat = self.compute_semantic_feat(self.real_A), self.compute_semantic_feat(self.rec_A)
         real_B_feat, rec_B_feat = self.compute_semantic_feat(self.real_B), self.compute_semantic_feat(self.rec_B)
         fake_A_feat, fake_B_feat = self.compute_semantic_feat(self.fake_A), self.compute_semantic_feat(self.fake_B)
-        self.loss_rec_sem_A = self.compute_semantic_loss(rec_A_feat, real_A_feat) * lambda_A * self.opt.lambda_semantic #lys
+        # self.loss_rec_sem_A = self.compute_semantic_loss(rec_A_feat, real_A_feat) * lambda_A * self.opt.lambda_semantic #lys
         self.loss_rec_sem_B = self.compute_semantic_loss(rec_B_feat, real_B_feat) * lambda_B * self.opt.lambda_semantic #lys
-        
-        self.loss_sem_A = self.compute_semantic_loss(fake_B_feat, real_A_feat) * 0.1 #lys
-        self.loss_sem_B = self.compute_semantic_loss(fake_A_feat, real_B_feat) * 0.1 #lys  
+        self.loss_sem_A2B = self.compute_semantic_loss(fake_B_feat, real_B_feat) * lambda_A * self.opt.lambda_semantic
+        # self.loss_sem_A = self.compute_semantic_loss(fake_B_feat, real_A_feat) * 0.1 #lys
+        # self.loss_sem_B = self.compute_semantic_loss(fake_A_feat, real_B_feat) * 0.1 #lys
         
         # combined loss
-        self.loss_G = self.loss_G_A + self.loss_G_B + self.loss_cycle_A + self.loss_cycle_B + self.loss_idt_A + self.loss_idt_B + self.loss_sem_A +self.loss_sem_B + self.loss_rec_sem_A + self.loss_rec_sem_B
+        # self.loss_G = self.loss_G_A + self.loss_G_B + self.loss_cycle_A + self.loss_cycle_B + self.loss_idt_A + self.loss_idt_B + self.loss_sem_A +self.loss_sem_B + self.loss_rec_sem_A + self.loss_rec_sem_B
+        self.loss_G = self.loss_G_A + self.loss_G_B + self.loss_cycle_A + self.loss_cycle_B + self.loss_idt_A + self.loss_idt_B + self.loss_rec_sem_B + self.loss_sem_A2B
         self.loss_G.backward()
 
     def optimize_parameters(self):

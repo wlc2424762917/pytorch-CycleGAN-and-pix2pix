@@ -102,7 +102,7 @@ val_transforms = Compose(
 
 def create_data_loader(data_dir, batch_size, num_workers=8):
     # full
-    split_json = r"\dataset.json"
+    split_json = "/dataset.json"
     datasets = data_dir + split_json
 
     datalist = load_decathlon_datalist(datasets, True, "training")
